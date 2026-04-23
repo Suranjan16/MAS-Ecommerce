@@ -31,9 +31,9 @@ public class ProductController {
         return service.getProduct(id);
     }
 
-    @PutMapping
-    public Product updateProduct(@RequestBody Product product) {
-        return service.updateProduct(product);
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable("id") Long id,@RequestBody Product product) {
+        return service.updateProduct(id,product);
     }
 
     @DeleteMapping("/{id}")
