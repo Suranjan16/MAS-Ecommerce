@@ -1,6 +1,7 @@
 package com.suranjan.mas.service;
 
 import com.suranjan.mas.entity.Product;
+import com.suranjan.mas.exception.ProductNotFoundException;
 import com.suranjan.mas.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,24 +25,25 @@ public class ProductService {
     }
 
     public Product getProduct(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public Product updateProduct(Long id,Product product) {
-        Product existingProduct = repository.findById(id).orElse(null);
+        Product existingProduct = repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
 
-        if (existingProduct != null) {
             existingProduct.setName(product.getName());
             existingProduct.setCategory(product.getCategory());
             existingProduct.setPrice(product.getPrice());
             existingProduct.setQuantity(product.getQuantity());
 
             return repository.save(existingProduct);
-        }
-        return null;
+
     }
 
     public void deleteProduct(Long id) {
-        repository.deleteById(id);
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        repository.delete(product);
     }
 }
