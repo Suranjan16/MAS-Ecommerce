@@ -46,4 +46,8 @@ public class ProductService {
 
         repository.delete(product);
     }
+
+    public List<Product> getProductByCategory(String category) {
+        return repository.findByCategory(category);
+    }
 }
