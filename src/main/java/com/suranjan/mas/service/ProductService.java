@@ -3,6 +3,8 @@ package com.suranjan.mas.service;
 import com.suranjan.mas.entity.Product;
 import com.suranjan.mas.exception.ProductNotFoundException;
 import com.suranjan.mas.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +55,9 @@ public class ProductService {
 
     public List<Product> getProductByName(String name) {
         return repository.findByNameContaining(name);
+    }
+
+    public Page<Product> getProductsWithPagination(int page, int size) {
+        return repository.findAll(PageRequest.of(page, size));
     }
 }

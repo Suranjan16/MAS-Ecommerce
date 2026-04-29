@@ -3,6 +3,7 @@ package com.suranjan.mas.controller;
 import com.suranjan.mas.entity.Product;
 import com.suranjan.mas.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,5 +52,9 @@ public class ProductController {
     @GetMapping("/search/{name}")
     public List<Product> getProductByName(@PathVariable("name") String name) {
         return service.getProductByName(name);
+    }
+
+    public Page<Product> getProductWithPagination(@RequestParam int page, @RequestParam int size) {
+        return service.getProductsWithPagination(page, size);
     }
 }
