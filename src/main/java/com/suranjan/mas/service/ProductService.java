@@ -3,9 +3,8 @@ package com.suranjan.mas.service;
 import com.suranjan.mas.entity.Product;
 import com.suranjan.mas.exception.ProductNotFoundException;
 import com.suranjan.mas.repository.ProductRepository;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,5 +68,46 @@ public class ProductService {
 
     public List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
         return repository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    public Page<Product> getProductsAdvanced(
+            String category,
+            String name,
+            Double minPrice,
+            Double maxPrice,
+            int page,
+            int size,
+            String sortField,
+            String direction
+    ) {
+        Specification<Product> spec = (root, query, cb) -> cb.conjunction();
+
+        if (category != null && !category.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("category"), category));
+        }
+
+        if (name != null && !name.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(root.get("name"), "%" + name + "%"));
+        }
+
+        if (minPrice != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+        }
+
+        if (maxPrice != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+        }
+
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortField).descending()
+                : Sort.by(sortField).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return repository.findAll(spec, pageable);
     }
 }
