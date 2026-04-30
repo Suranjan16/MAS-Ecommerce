@@ -66,4 +66,8 @@ public class ProductService {
 
         return repository.findAll(PageRequest.of(page, size, sort));
     }
+
+    public List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
+        return repository.findByPriceBetween(minPrice, maxPrice);
+    }
 }

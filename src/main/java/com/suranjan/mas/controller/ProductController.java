@@ -63,4 +63,12 @@ public class ProductController {
 
         return service.getProductsWithPaginationAndSorting(page, size, sort, direction);
     }
+
+    @GetMapping("/filter")
+    public List<Product> getProductsByPrice(
+            @RequestParam double minPrice,
+            @RequestParam double maxPrice) {
+
+        return service.getProductsByPriceRange(minPrice, maxPrice);
+    }
 }
