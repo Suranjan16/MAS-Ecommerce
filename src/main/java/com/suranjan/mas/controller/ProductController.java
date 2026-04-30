@@ -71,4 +71,27 @@ public class ProductController {
 
         return service.getProductsByPriceRange(minPrice, maxPrice);
     }
+
+    @GetMapping("/advanced")
+    public Page<Product> getProductsAdvanced(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return service.getProductsAdvanced(
+                category,
+                name,
+                minPrice,
+                maxPrice,
+                page,
+                size,
+                sort,
+                direction
+        );
+    }
 }
