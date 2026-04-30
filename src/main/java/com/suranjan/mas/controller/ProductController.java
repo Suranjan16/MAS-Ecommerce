@@ -55,7 +55,12 @@ public class ProductController {
     }
 
     @GetMapping("/page")
-    public Page<Product> getProductWithPagination(@RequestParam int page, @RequestParam int size) {
-        return service.getProductsWithPagination(page, size);
+    public Page<Product> getProducts(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String sort,
+            @RequestParam String direction) {
+
+        return service.getProductsWithPaginationAndSorting(page, size, sort, direction);
     }
 }

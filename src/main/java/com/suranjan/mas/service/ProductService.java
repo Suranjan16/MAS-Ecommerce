@@ -3,6 +3,7 @@ package com.suranjan.mas.service;
 import com.suranjan.mas.entity.Product;
 import com.suranjan.mas.exception.ProductNotFoundException;
 import com.suranjan.mas.repository.ProductRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,12 @@ public class ProductService {
         return repository.findByNameContaining(name);
     }
 
-    public Page<Product> getProductsWithPagination(int page, int size) {
-        return repository.findAll(PageRequest.of(page, size));
+    public Page<Product> getProductsWithPaginationAndSorting(int page, int size, String field, String direction) {
+
+        Sort sort = direction.equalsIgnoreCase("asc") ?
+                Sort.by(field).ascending() :
+                Sort.by(field).descending();
+
+        return repository.findAll(PageRequest.of(page, size, sort));
     }
 }
