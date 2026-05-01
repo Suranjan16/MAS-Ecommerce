@@ -1,7 +1,7 @@
-package com.suranjan.mas.controller;
+package com.suranjan.mas.product.controller;
 
-import com.suranjan.mas.entity.Product;
-import com.suranjan.mas.service.ProductService;
+import com.suranjan.mas.product.entity.Product;
+import com.suranjan.mas.product.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;

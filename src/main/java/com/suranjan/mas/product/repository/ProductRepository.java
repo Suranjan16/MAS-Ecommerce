@@ -1,6 +1,6 @@
-package com.suranjan.mas.repository;
+package com.suranjan.mas.product.repository;
 
-import com.suranjan.mas.entity.Product;
+import com.suranjan.mas.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

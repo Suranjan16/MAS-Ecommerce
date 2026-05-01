@@ -1,4 +1,4 @@
-package com.suranjan.mas.entity;
+package com.suranjan.mas.product.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
