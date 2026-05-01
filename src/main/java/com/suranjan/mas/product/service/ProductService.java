@@ -1,8 +1,8 @@
-package com.suranjan.mas.service;
+package com.suranjan.mas.product.service;
 
-import com.suranjan.mas.entity.Product;
+import com.suranjan.mas.product.entity.Product;
 import com.suranjan.mas.exception.ProductNotFoundException;
-import com.suranjan.mas.repository.ProductRepository;
+import com.suranjan.mas.product.repository.ProductRepository;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
