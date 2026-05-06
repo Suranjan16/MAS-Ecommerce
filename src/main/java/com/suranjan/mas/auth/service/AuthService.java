@@ -1,6 +1,7 @@
 package com.suranjan.mas.auth.service;
 
 
+import com.suranjan.mas.auth.dto.LoginRequest;
 import com.suranjan.mas.auth.entity.Role;
 import com.suranjan.mas.auth.entity.User;
 import com.suranjan.mas.auth.repository.UserRepository;
@@ -29,5 +30,16 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return repository.save(user);
+    }
+
+    public String Login(LoginRequest loginRequest) {
+        User user = repository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return "Login successful";
     }
 }
