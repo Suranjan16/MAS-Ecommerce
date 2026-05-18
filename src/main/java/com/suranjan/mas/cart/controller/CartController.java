@@ -5,7 +5,6 @@ import com.suranjan.mas.auth.entity.User;
 import com.suranjan.mas.auth.repository.UserRepository;
 import com.suranjan.mas.cart.dto.AddToCartRequest;
 import com.suranjan.mas.cart.dto.CartResponse;
-import com.suranjan.mas.cart.entity.Cart;
 import com.suranjan.mas.cart.service.CartService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +38,14 @@ public class CartController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return cartService.getCart(user);
+    }
+
+    @DeleteMapping("/remove/{productId}")
+    public String removeFromCart(@PathVariable Long productId, Authentication authentication) {
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return cartService.removeFromCart(user,productId);
     }
 }
