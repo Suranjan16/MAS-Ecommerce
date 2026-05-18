@@ -1,10 +1,10 @@
 package com.suranjan.mas.cart.dto;
 
-public class addToCartRequest {
+public class AddToCartRequest {
     private Long productId;
     private Integer quantity;
 
-    public addToCartRequest() {
+    public AddToCartRequest() {
     }
 
     public Long getProductId() {

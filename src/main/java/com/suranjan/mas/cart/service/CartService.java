@@ -1,6 +1,7 @@
 package com.suranjan.mas.cart.service;
 
 import com.suranjan.mas.auth.entity.User;
+import com.suranjan.mas.cart.dto.AddToCartRequest;
 import com.suranjan.mas.cart.entity.Cart;
 import com.suranjan.mas.cart.entity.CartItem;
 import com.suranjan.mas.cart.repository.CartItemRepository;
@@ -25,9 +26,9 @@ public class CartService {
         this.productRepository = productRepository;
     }
 
-    public String addToCart(User user, Long productId, Integer quantity) {
+    public String addToCart(User user, AddToCartRequest request) {
 
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Cart cart = cartRepository.findByUser(user)
@@ -37,19 +38,25 @@ public class CartService {
                     return cartRepository.save(newCart);
                 });
 
-        CartItem cartItem = cartItemRepository.findByCartAndProduct(cart, product)
+        CartItem cartItem = cartItemRepository
+                .findByCartAndProduct(cart, product)
                 .orElseGet(() -> {
+
                     CartItem newItem = new CartItem();
+
                     newItem.setCart(cart);
                     newItem.setProduct(product);
                     newItem.setQuantity(0);
+
                     return newItem;
                 });
 
-        cartItem.setQuantity(cartItem.getQuantity() + quantity);
+        cartItem.setQuantity(
+                cartItem.getQuantity() + request.getQuantity()
+        );
 
         cartItemRepository.save(cartItem);
 
-        return "Product added to cart successfully";
+        return "Product added successfully";
     }
 }
