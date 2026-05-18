@@ -1,7 +1,11 @@
 package com.suranjan.mas.cart.service;
 
+import com.suranjan.mas.auth.entity.User;
+import com.suranjan.mas.cart.entity.Cart;
+import com.suranjan.mas.cart.entity.CartItem;
 import com.suranjan.mas.cart.repository.CartItemRepository;
 import com.suranjan.mas.cart.repository.CartRepository;
+import com.suranjan.mas.product.entity.Product;
 import com.suranjan.mas.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +23,33 @@ public class CartService {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
+    }
+
+    public String addToCart(User user, Long productId, Integer quantity) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Cart cart = cartRepository.findByUser(user)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return cartRepository.save(newCart);
+                });
+
+        CartItem cartItem = cartItemRepository.findByCartAndProduct(cart, product)
+                .orElseGet(() -> {
+                    CartItem newItem = new CartItem();
+                    newItem.setCart(cart);
+                    newItem.setProduct(product);
+                    newItem.setQuantity(0);
+                    return newItem;
+                });
+
+        cartItem.setQuantity(cartItem.getQuantity() + quantity);
+
+        cartItemRepository.save(cartItem);
+
+        return "Product added to cart successfully";
     }
 }
